@@ -1,2 +1,4 @@
 # NexStage
-NesxtStage - Sistema de Gerenciamento de Vagas para Estágio 
+Sistema de Gerenciamento de Vagas para Estágio 
+
+Desenvolvido por alunos do If Baiano Campus Guanambi 
