@@ -1,0 +1,29 @@
+{% extends '_base.html' %}
+
+{% block title %}Excluir Moto{% endblock %}
+
+{% block content %}
+
+<div class="card p-4 shadow-sm">
+    <h3>Confirmar exclusão</h3>
+
+    <p>Tem certeza que deseja excluir esta moto do estoque?</p>
+
+    <h5 class="text-danger">
+        {{ moto.marca }} {{ moto.modelo }}
+    </h5>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <button type="submit" class="btn btn-danger">
+            Sim, excluir
+        </button>
+
+        <a href="/" class="btn btn-secondary">
+            Cancelar
+        </a>
+    </form>
+</div>
+
+{% endblock %}

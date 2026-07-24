@@ -1,0 +1,60 @@
+{% extends "_base.html" %}
+
+{% block title %}Estoque de Motos{% endblock %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="mb-0">Estoque de motos</h2>
+    <a href="/novo/" class="btn btn-primary">Cadastrar moto</a>
+</div>
+
+<table class="table table-bordered table-striped table-hover align-middle">
+
+    <thead class="table-dark">
+        <tr>
+            <th>ID</th>
+            <th>Marca</th>
+            <th>Modelo</th>
+            <th>Ano</th>
+            <th>Cor</th>
+            <th>Preço</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for moto in motos %}
+        <tr>
+            <td>{{ moto.id }}</td>
+            <td>{{ moto.marca }}</td>
+            <td>{{ moto.modelo }}</td>
+            <td>{{ moto.ano }}</td>
+            <td>{{ moto.cor }}</td>
+            <td>R$ {{ moto.preco }}</td>
+            <td>
+                <a href="/detalhe/{{ moto.id }}/" class="btn btn-sm btn-info">
+                    Detalhes
+                </a>
+
+                <a href="/editar/{{ moto.id }}/" class="btn btn-sm btn-warning">
+                    Editar
+                </a>
+
+                <a href="/deletar/{{ moto.id }}/" class="btn btn-sm btn-danger">
+                    Deletar
+                </a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="7" class="text-center text-muted">
+                Nenhuma moto cadastrada
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+
+</table>
+
+{% endblock %}

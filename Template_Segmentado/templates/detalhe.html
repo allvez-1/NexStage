@@ -1,0 +1,55 @@
+{% extends "_base.html" %}
+
+{% block title %}Detalhes da Moto{% endblock %}
+
+{% block content %}
+
+<div class="card shadow-sm p-4">
+
+    <h2 class="mb-3">{{ moto.marca }} {{ moto.modelo }}</h2>
+
+    <ul class="list-group mb-3">
+        <li class="list-group-item">
+            <strong>ID:</strong> {{ moto.id }}
+        </li>
+
+        <li class="list-group-item">
+            <strong>Marca:</strong> {{ moto.marca }}
+        </li>
+
+        <li class="list-group-item">
+            <strong>Modelo:</strong> {{ moto.modelo }}
+        </li>
+
+        <li class="list-group-item">
+            <strong>Ano:</strong> {{ moto.ano }}
+        </li>
+
+        <li class="list-group-item">
+            <strong>Cor:</strong> {{ moto.cor }}
+        </li>
+
+        <li class="list-group-item">
+            <strong>Preço:</strong> R$ {{ moto.preco }}
+        </li>
+    </ul>
+
+    <div class="d-flex gap-2">
+
+        <a href="/editar/{{ moto.id }}/" class="btn btn-warning">
+            Editar
+        </a>
+
+        <a href="/deletar/{{ moto.id }}/" class="btn btn-danger">
+            Excluir
+        </a>
+
+        <a href="/" class="btn btn-secondary">
+            Voltar
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}

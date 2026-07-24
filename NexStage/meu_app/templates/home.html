@@ -1,0 +1,19 @@
+{% extends '_base.html' %}
+
+{% block title %}Moto Prime{% endblock %}
+{% block breadcrumb %}Início{% endblock %}
+{% block page_title %}Moto Prime{% endblock %}
+
+{% block content %}
+
+<div class="relative flex flex-col min-w-0 break-words bg-white border-0 shadow-xl rounded-2xl bg-clip-border">
+    <div class="p-6 text-center">
+        <h1 class="mb-3 text-3xl font-bold text-slate-700">Moto Prime</h1>
+        <p class="mb-4 text-slate-500">Sistema de gerenciamento de estoque para concessionária de motos.</p>
+        <a href="/novo/" class="inline-block px-6 py-3 text-xs font-bold text-center text-white uppercase bg-blue-500 rounded-lg shadow-md hover:shadow-xs">
+            Cadastrar nova moto
+        </a>
+    </div>
+</div>
+
+{% endblock %}

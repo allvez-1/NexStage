@@ -1,0 +1,29 @@
+{% extends '_base.html' %}
+
+{% block title %}Cadastro de Moto{% endblock %}
+
+{% block content %}
+
+<h2 class="mb-4">Cadastrar ou editar moto</h2>
+
+<form method="POST">
+    {% csrf_token %}
+    <div class="row g-3">
+        {% for field in form %}
+        <div class="col-md-6">
+            <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field }}
+            {% if field.errors %}
+            <div class="text-danger small">{{ field.errors }}</div>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="mt-4">
+        <button class="btn btn-primary">Salvar moto</button>
+        <a href="/" class="btn btn-secondary">Cancelar</a>
+    </div>
+</form>
+
+{% endblock %}
