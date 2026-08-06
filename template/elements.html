@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,9 +7,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>UI Elements — VaultEdge</title>
-    <link rel="icon" href="img/core-img/favicon.ico">
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="css/custom-override.css">
+    <link rel="icon" href="{% static 'assets/img/core-img/favicon.ico' %}">
+    <link rel="stylesheet" href="{% static 'assets/style.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/custom-override.css' %}">
 </head>
 <body>
     <div class="preloader d-flex align-items-center justify-content-center">
@@ -38,7 +39,7 @@
             <li><a href="post.html">Insights</a></li><li><a href="contact.html">Contact</a></li>
         </ul></div>
     </header>
-    <section class="ve-page-hero" style="background-image:url(img/bg-img/13.jpg);">
+    <section class="ve-page-hero" style="background-image:url({% static 'assets/img/bg-img/13.jpg' %});">
         <div class="ve-page-hero-overlay"></div>
         <div class="container ve-page-hero-content">
             <span class="ve-section-tag">Design System</span><h1>UI <span>Elements &amp; Components</span></h1>
@@ -96,9 +97,9 @@
             <div class="ve-el-block">
                 <h3 class="ve-el-title"><span>04</span> Testimonial Cards</h3>
                 <div class="ve-testi-grid">
-                    <div class="ve-testi-card"><div class="ve-testi-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p>"VaultEdge transformed how I manage my finances. My portfolio has grown by 22% in just 18 months."</p><div class="ve-testi-author"><div class="ve-testi-avatar bg-img" style="background-image:url(img/bg-img/32.jpg);"></div><div><strong>Alex Morgan</strong><span>Entrepreneur</span></div></div></div>
-                    <div class="ve-testi-card"><div class="ve-testi-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p>"The retirement planning team gave me total peace of mind. Professional, responsive, and results-driven."</p><div class="ve-testi-author"><div class="ve-testi-avatar bg-img" style="background-image:url(img/bg-img/33.jpg);"></div><div><strong>Sarah Patel</strong><span>Marketing Director</span></div></div></div>
-                    <div class="ve-testi-card"><div class="ve-testi-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p>"Switched from our old firm and couldn't be happier. Their tax advisory alone saved us thousands."</p><div class="ve-testi-author"><div class="ve-testi-avatar bg-img" style="background-image:url(img/bg-img/14.jpg);"></div><div><strong>James Liu</strong><span>Business Owner</span></div></div></div>
+                    <div class="ve-testi-card"><div class="ve-testi-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p>"VaultEdge transformed how I manage my finances. My portfolio has grown by 22% in just 18 months."</p><div class="ve-testi-author"><div class="ve-testi-avatar bg-img" style="background-image:url({% static 'assets/img/bg-img/32.jpg' %});"></div><div><strong>Alex Morgan</strong><span>Entrepreneur</span></div></div></div>
+                    <div class="ve-testi-card"><div class="ve-testi-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p>"The retirement planning team gave me total peace of mind. Professional, responsive, and results-driven."</p><div class="ve-testi-author"><div class="ve-testi-avatar bg-img" style="background-image:url({% static 'assets/img/bg-img/33.jpg' %});"></div><div><strong>Sarah Patel</strong><span>Marketing Director</span></div></div></div>
+                    <div class="ve-testi-card"><div class="ve-testi-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p>"Switched from our old firm and couldn't be happier. Their tax advisory alone saved us thousands."</p><div class="ve-testi-author"><div class="ve-testi-avatar bg-img" style="background-image:url({% static 'assets/img/bg-img/14.jpg' %});"></div><div><strong>James Liu</strong><span>Business Owner</span></div></div></div>
                 </div>
             </div>
 
@@ -179,10 +180,10 @@
         <p>Copyright &copy; <script>document.write(new Date().getFullYear());</script> VaultEdge. All Rights Reserved <a href="https://github.com/Rabina-Vishwakarma/" class="text-white" target="_blank">Rabina Vishwakarma</a> • Distributed by <a href="https://themewagon.com" class="text-white" target="_blank">ThemeWagon</a></p>
         <ul><li><a href="#">Privacy Policy</a></li><li><a href="#">Terms of Use</a></li><li><a href="#">Cookie Policy</a></li></ul>
     </div></div></div></footer>
-    <script src="js/jquery/jquery-2.2.4.min.js"></script>
-    <script src="js/bootstrap/popper.min.js"></script>
-    <script src="js/bootstrap/bootstrap.min.js"></script>
-    <script src="js/plugins/plugins.js"></script>
-    <script src="js/active.js"></script>
-    <script src="js/vaultedge.js"></script>
+    <script src="{% static 'assets/js/jquery/jquery-2.2.4.min.js' %}"></script>
+    <script src="{% static 'assets/js/bootstrap/popper.min.js' %}"></script>
+    <script src="{% static 'assets/js/bootstrap/bootstrap.min.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/plugins.js' %}"></script>
+    <script src="{% static 'assets/js/active.js' %}"></script>
+    <script src="{% static 'assets/js/vaultedge.js' %}"></script>
 </body></html>

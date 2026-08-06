@@ -3,7 +3,18 @@ from .models import Moto
 from .forms import MotoForm
 
 def home(request):
-    return render(request, 'home.html')
+    return render(request, 'index.html')
+
+
+def pagina_institucional(request, pagina):
+    """Renderiza as páginas estáticas do tema mantidas pelo projeto."""
+    paginas_permitidas = {
+        'about', 'contact', 'elements', 'index', 'post', 'services', 'single-post',
+    }
+    if pagina not in paginas_permitidas:
+        from django.http import Http404
+        raise Http404('Página não encontrada.')
+    return render(request, f'{pagina}.html')
 
 
 
