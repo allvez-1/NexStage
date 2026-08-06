@@ -1,0 +1,6 @@
+{% extends '_base.html' %}
+{% block titulo %}Candidatar-se | NexStage{% endblock %}
+{% block conteudo %}
+<section class="pagina-topo"><div class="container"><p>{{ vaga.empresa }}</p><h1>Candidatura para {{ vaga.titulo }}</h1><p>Preencha seus dados e envie seu currículo para participar do processo seletivo.</p></div></section>
+<section class="conteudo"><div class="container formulario"><span class="rotulo">Sua candidatura</span><h2 class="titulo">Apresente seu perfil</h2><form method="post" enctype="multipart/form-data" novalidate>{% csrf_token %}{% for field in form %}<div class="grupo-campo"><label for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}{% if field.help_text %}<div class="ajuda">{{ field.help_text }}</div>{% endif %}{% for error in field.errors %}<div class="ajuda">{{ error }}</div>{% endfor %}</div>{% endfor %}<button class="botao" type="submit">Enviar candidatura</button></form></div></section>
+{% endblock %}

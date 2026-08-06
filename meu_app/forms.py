@@ -1,21 +1,32 @@
 from django import forms
-from .models import Moto
 
-class MotoForm(forms.ModelForm):
+from .models import Candidatura, Vaga
+
+
+class EstiloFormularioMixin:
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs['class'] = 'campo-formulario'
+
+
+class VagaForm(EstiloFormularioMixin, forms.ModelForm):
     class Meta:
-        model = Moto
-        fields = ['marca', 'modelo', 'ano', 'cor', 'preco']
-        labels = {
-            'marca': 'Marca',
-            'modelo': 'Modelo',
-            'ano': 'Ano',
-            'cor': 'Cor',
-            'preco': 'Preço',
-        }
+        model = Vaga
+        fields = [
+            'empresa', 'titulo', 'area', 'descricao', 'requisitos', 'localizacao',
+            'modalidade', 'carga_horaria', 'bolsa', 'prazo_candidatura',
+        ]
         widgets = {
-            'marca': forms.TextInput(attrs={'class': 'focus:shadow-primary-outline text-sm leading-5.6 ease block w-full rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none'}),
-            'modelo': forms.TextInput(attrs={'class': 'focus:shadow-primary-outline text-sm leading-5.6 ease block w-full rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none'}),
-            'ano': forms.NumberInput(attrs={'class': 'focus:shadow-primary-outline text-sm leading-5.6 ease block w-full rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none', 'min': 1900}),
-            'cor': forms.TextInput(attrs={'class': 'focus:shadow-primary-outline text-sm leading-5.6 ease block w-full rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none'}),
-            'preco': forms.NumberInput(attrs={'class': 'focus:shadow-primary-outline text-sm leading-5.6 ease block w-full rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none', 'step': '0.01'}),
+            'descricao': forms.Textarea(attrs={'rows': 5}),
+            'requisitos': forms.Textarea(attrs={'rows': 4}),
+            'prazo_candidatura': forms.DateInput(attrs={'type': 'date'}),
+            'bolsa': forms.NumberInput(attrs={'step': '0.01', 'min': '0'}),
         }
+
+
+class CandidaturaForm(EstiloFormularioMixin, forms.ModelForm):
+    class Meta:
+        model = Candidatura
+        fields = ['nome', 'email', 'telefone', 'curso', 'curriculo', 'apresentacao']
+        widgets = {'apresentacao': forms.Textarea(attrs={'rows': 5})}

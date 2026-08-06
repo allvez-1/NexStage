@@ -1,0 +1,6 @@
+{% extends '_base.html' %}
+{% block titulo %}{{ vaga.titulo }} | NexStage{% endblock %}
+{% block conteudo %}
+<section class="pagina-topo"><div class="container"><p>{{ vaga.empresa }}</p><h1>{{ vaga.titulo }}</h1><p>{{ vaga.area }} · {{ vaga.localizacao }} · {{ vaga.get_modalidade_display }}</p></div></section>
+<section class="conteudo"><div class="container detalhe"><article><span class="rotulo">Sobre a oportunidade</span><h2 class="titulo">Descrição da vaga</h2><p>{{ vaga.descricao|linebreaksbr }}</p><h2 class="titulo">Requisitos</h2><p>{{ vaga.requisitos|default:'A empresa informará os requisitos durante o processo seletivo.'|linebreaksbr }}</p></article><aside class="painel-lateral"><h3>Informações da vaga</h3><ul class="lista-detalhes"><li><strong>Empresa:</strong> {{ vaga.empresa }}</li><li><strong>Área:</strong> {{ vaga.area }}</li><li><strong>Modalidade:</strong> {{ vaga.get_modalidade_display }}</li><li><strong>Jornada:</strong> {{ vaga.carga_horaria|default:'A combinar' }}</li><li><strong>Bolsa:</strong> {% if vaga.bolsa %}R$ {{ vaga.bolsa }}{% else %}A combinar{% endif %}</li><li><strong>Prazo:</strong> {{ vaga.prazo_candidatura|date:'d/m/Y' }}</li></ul><a class="botao" href="{% url 'candidatar' vaga.id %}">Candidatar-se</a></aside></div></section>
+{% endblock %}

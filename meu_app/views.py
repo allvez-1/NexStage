@@ -1,75 +1,57 @@
+from django.contrib import messages
+from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
-from .models import Moto
-from .forms import MotoForm
+
+from .forms import CandidaturaForm, VagaForm
+from .models import Vaga
+
 
 def home(request):
-    return render(request, 'index.html')
+    vagas = Vaga.objects.filter(ativa=True)[:3]
+    return render(request, 'index.html', {'vagas': vagas})
 
 
-def pagina_institucional(request, pagina):
-    """Renderiza as páginas estáticas do tema mantidas pelo projeto."""
-    paginas_permitidas = {
-        'about', 'contact', 'elements', 'index', 'post', 'services', 'single-post',
-    }
-    if pagina not in paginas_permitidas:
-        from django.http import Http404
-        raise Http404('Página não encontrada.')
-    return render(request, f'{pagina}.html')
+def lista_vagas(request):
+    termo = request.GET.get('q', '').strip()
+    vagas = Vaga.objects.filter(ativa=True)
+    if termo:
+        vagas = vagas.filter(
+            Q(titulo__icontains=termo)
+            | Q(empresa__icontains=termo)
+            | Q(area__icontains=termo)
+        )
+    return render(request, 'vagas.html', {'vagas': vagas, 'termo': termo})
 
 
-
-def lista_motos(request):
-    motos = Moto.objects.all()
-
-    return render(request, 'lista.html', {
-        'motos': motos
-    })
+def detalhe_vaga(request, id):
+    vaga = get_object_or_404(Vaga, id=id, ativa=True)
+    return render(request, 'detalhe_vaga.html', {'vaga': vaga})
 
 
-def detalhe_moto(request, id):
-    moto = get_object_or_404(Moto, id=id)
-
-    return render(request, 'detalhe.html', {
-        'moto': moto
-    })
-
-
-def criar_moto(request):
-    form = MotoForm(request.POST or None)
-
-    if form.is_valid():
+def publicar_vaga(request):
+    form = VagaForm(request.POST or None)
+    if request.method == 'POST' and form.is_valid():
         form.save()
-
-        return redirect('lista_motos')
-
-    return render(request, 'form.html', {
-        'form': form
-    })
+        messages.success(request, 'Vaga publicada com sucesso. Ela já está disponível para candidatos.')
+        return redirect('lista_vagas')
+    return render(request, 'publicar_vaga.html', {'form': form})
 
 
-def editar_moto(request, id):
-    moto = get_object_or_404(Moto, id=id)
-
-    form = MotoForm(request.POST or None, instance=moto)
-
-    if form.is_valid():
-        form.save()
-
-        return redirect('lista_motos')
-
-    return render(request, 'form.html', {
-        'form': form
-    })
+def candidatar(request, id):
+    vaga = get_object_or_404(Vaga, id=id, ativa=True)
+    form = CandidaturaForm(request.POST or None, request.FILES or None)
+    if request.method == 'POST' and form.is_valid():
+        candidatura = form.save(commit=False)
+        candidatura.vaga = vaga
+        candidatura.save()
+        messages.success(request, 'Candidatura enviada. A empresa poderá entrar em contato pelo e-mail informado.')
+        return redirect('detalhe_vaga', id=vaga.id)
+    return render(request, 'candidatar.html', {'form': form, 'vaga': vaga})
 
 
-def deletar_moto(request, id):
-    moto = get_object_or_404(Moto, id=id)
+def sobre(request):
+    return render(request, 'sobre.html')
 
-    if request.method == 'POST':
-        moto.delete()
 
-        return redirect('lista_motos')
-
-    return render(request, 'confirmar_delete.html', {
-        'moto': moto
-    })
+def contato(request):
+    return render(request, 'contato.html')

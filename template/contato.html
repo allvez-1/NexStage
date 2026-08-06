@@ -1,0 +1,6 @@
+{% extends '_base.html' %}
+{% block titulo %}Contato | NexStage{% endblock %}
+{% block conteudo %}
+<section class="pagina-topo"><div class="container"><h1>Fale com o NexStage</h1><p>Tem dúvidas sobre uma vaga ou sobre a plataforma? Entre em contato.</p></div></section>
+<section class="conteudo"><div class="container grade"><article class="card"><div class="icone">✉</div><h3>Dúvidas sobre vagas</h3><p>Consulte os detalhes de cada oportunidade e acompanhe os prazos de candidatura.</p><a class="link" href="{% url 'lista_vagas' %}">Ver vagas publicadas →</a></article><article class="card"><div class="icone">＋</div><h3>Publicar oportunidade</h3><p>Empresas e instituições podem cadastrar vagas sem necessidade de login.</p><a class="link" href="{% url 'publicar_vaga' %}">Cadastrar uma vaga →</a></article><article class="card"><div class="icone">⌂</div><h3>Guanambi - BA</h3><p>O NexStage foi pensado para fortalecer a conexão entre juventude, educação e mercado local.</p><a class="link" href="{% url 'sobre' %}">Conhecer o projeto →</a></article></div></section>
+{% endblock %}

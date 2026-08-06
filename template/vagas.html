@@ -1,0 +1,6 @@
+{% extends '_base.html' %}
+{% block titulo %}Vagas de estágio | NexStage{% endblock %}
+{% block conteudo %}
+<section class="pagina-topo"><div class="container"><h1>Vagas de estágio</h1><p>Encontre oportunidades compatíveis com sua formação e seus objetivos.</p></div></section>
+<section class="conteudo"><div class="container"><form class="busca" action="{% url 'lista_vagas' %}" method="get"><input class="campo-formulario" name="q" value="{{ termo }}" placeholder="Área, empresa ou título da vaga"><button class="botao" type="submit">Pesquisar</button></form><div class="grade-vagas">{% for vaga in vagas %}<article class="card vaga-card"><span class="empresa">{{ vaga.empresa }}</span><h3>{{ vaga.titulo }}</h3><p>{{ vaga.descricao|truncatechars:140 }}</p><div class="meta"><span class="tag">{{ vaga.area }}</span><span>{{ vaga.localizacao }}</span><span>Prazo: {{ vaga.prazo_candidatura|date:'d/m/Y' }}</span></div><a class="link" href="{% url 'detalhe_vaga' vaga.id %}">Conferir vaga →</a></article>{% empty %}<div class="vazio">Nenhuma vaga encontrada{% if termo %} para “{{ termo }}”{% endif %}. Tente outra busca ou volte mais tarde.</div>{% endfor %}</div></div></section>
+{% endblock %}
