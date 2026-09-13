@@ -1,0 +1,6 @@
+{% extends '_base.html' %}
+{% block titulo %}Painel da empresa | NexStage{% endblock %}
+{% block conteudo %}
+<section class="pagina-topo"><div class="container"><p>{{ user.empresa.nome_fantasia }}</p><h1>Painel da empresa</h1><p>Publique vagas, edite oportunidades e acompanhe os candidatos inscritos.</p></div></section>
+<section class="conteudo"><div class="container"><div class="acoes"><a class="botao" href="{% url 'publicar_vaga' %}">Publicar nova vaga</a><a class="botao botao-secundario" href="{% url 'editar_empresa' %}">Editar empresa</a></div><h2 class="titulo">Minhas vagas</h2><div class="grade-vagas">{% for vaga in vagas %}<article class="card vaga-card"><span class="empresa">{{ vaga.get_modalidade_display }}</span><h3>{{ vaga.titulo }}</h3><div class="meta"><span>{{ vaga.area }}</span><span>{{ vaga.candidaturas.count }} candidatura{{ vaga.candidaturas.count|pluralize }}</span></div><div class="acoes"><a class="link" href="{% url 'editar_vaga' vaga.id %}">Editar</a><a class="link" href="{% url 'candidatos_vaga' vaga.id %}">Candidatos</a><a class="link" href="{% url 'excluir_vaga' vaga.id %}">Excluir</a></div></article>{% empty %}<div class="vazio">Sua empresa ainda não publicou vagas. <a class="link" href="{% url 'publicar_vaga' %}">Publique a primeira</a>.</div>{% endfor %}</div></div></section>
+{% endblock %}

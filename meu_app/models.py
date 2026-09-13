@@ -1,4 +1,35 @@
+from django.conf import settings
 from django.db import models
+
+
+class PerfilCandidato(models.Model):
+    usuario = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='perfil_candidato')
+    telefone = models.CharField('telefone', max_length=25, blank=True)
+    curso = models.CharField('curso ou área de formação', max_length=140)
+    curriculo = models.FileField('currículo', upload_to='curriculos/', blank=True)
+
+    class Meta:
+        verbose_name = 'perfil de candidato'
+        verbose_name_plural = 'perfis de candidatos'
+
+    def __str__(self):
+        return self.usuario.get_full_name() or self.usuario.username
+
+
+class Empresa(models.Model):
+    usuario = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='empresa')
+    nome_fantasia = models.CharField('nome fantasia', max_length=140)
+    cnpj = models.CharField('CNPJ', max_length=18, blank=True)
+    descricao = models.TextField('sobre a empresa', blank=True)
+    telefone = models.CharField('telefone', max_length=25, blank=True)
+    endereco = models.CharField('endereço', max_length=180, blank=True)
+
+    class Meta:
+        verbose_name = 'empresa'
+        verbose_name_plural = 'empresas'
+
+    def __str__(self):
+        return self.nome_fantasia
 
 
 class Vaga(models.Model):
@@ -8,7 +39,8 @@ class Vaga(models.Model):
         ('remoto', 'Remoto'),
     ]
 
-    empresa = models.CharField('empresa', max_length=120)
+    empresa_nome = models.CharField('empresa', max_length=120, blank=True)
+    empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE, related_name='vagas', null=True, blank=True)
     titulo = models.CharField('título da vaga', max_length=140)
     area = models.CharField('área de atuação', max_length=100)
     descricao = models.TextField('descrição')
@@ -32,6 +64,7 @@ class Vaga(models.Model):
 
 class Candidatura(models.Model):
     vaga = models.ForeignKey(Vaga, on_delete=models.CASCADE, related_name='candidaturas')
+    candidato = models.ForeignKey(PerfilCandidato, on_delete=models.CASCADE, related_name='candidaturas', null=True, blank=True)
     nome = models.CharField('nome completo', max_length=140)
     email = models.EmailField('e-mail')
     telefone = models.CharField('telefone', max_length=25)
