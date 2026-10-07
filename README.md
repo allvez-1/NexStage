@@ -13,7 +13,7 @@
 </p>
 
 <p align="center">
-  <img src="static/assets/img/bg-img/6.jpg" alt="Imagem de capa do NexStage: vista panorâmica de uma cidade" width="100%">
+  <img src="static/assets/img/bg-img/Guanambi.jpg" alt="Imagem de capa do NexStage: vista panorâmica de guanambi" width="100%">
 </p>
 
 > **NexStage** é um Sistema de Gerenciamento de Vagas para Estágio. O projeto centraliza oportunidades e organiza o acompanhamento das candidaturas em um só lugar.
