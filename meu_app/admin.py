@@ -12,8 +12,10 @@ class VagaAdmin(admin.ModelAdmin):
 
 @admin.register(Candidatura)
 class CandidaturaAdmin(admin.ModelAdmin):
-    list_display = ('nome', 'vaga', 'curso', 'criada_em')
-    search_fields = ('nome', 'email', 'curso')
+    list_display = ('nome', 'vaga', 'curso', 'status', 'criada_em')
+    list_editable = ('status',)
+    list_filter = ('status', 'criada_em')
+    search_fields = ('nome', 'email', 'curso', 'vaga__titulo')
 
 
 @admin.register(Empresa)

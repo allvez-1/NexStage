@@ -1,6 +1,21 @@
 {% extends '_base.html' %}
 {% block titulo %}Excluir vaga | NexStage{% endblock %}
 {% block conteudo %}
-<section class="pagina-topo"><div class="container"><h1>Excluir vaga</h1><p>Esta ação remove a vaga e suas candidaturas associadas.</p></div></section>
-<section class="conteudo"><div class="container formulario"><div class="card"><h2 class="titulo">Deseja excluir “{{ vaga.titulo }}”?</h2><p>Essa ação não poderá ser desfeita.</p><form method="post" class="acoes">{% csrf_token %}<button class="botao" type="submit">Sim, excluir vaga</button><a class="botao botao-secundario" href="{% url 'painel_empresa' %}">Cancelar</a></form></div></div></section>
+<section class="pagina-topo"><div class="container">
+    <h1>Desativar vaga</h1>
+    <p>A vaga deixará de aparecer como oportunidade disponível, mas suas informações e candidaturas serão preservadas.</p>
+</div>
+</section>
+<section class="conteudo">
+    <div class="container formulario">
+        <div class="card">
+            <h2 class="titulo">Deseja Desativar “{{ vaga.titulo }}”?</h2>
+            <p>A vaga deixará de ser exibida para os candidatos, mas seu histórico será preservado.</p>
+            <form method="post" class="acoes">{% csrf_token %}
+                <button class="botao" type="submit">Sim, Desativar vaga</button>
+                <a class="botao botao-secundario" href="{% url 'painel_empresa' %}">Cancelar</a>
+            </form>
+        </div>
+    </div>
+</section>
 {% endblock %}

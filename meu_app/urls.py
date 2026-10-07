@@ -14,6 +14,7 @@ urlpatterns = [
     path('cadastro/empresa/', views.cadastro_empresa, name='cadastro_empresa'),
     path('sair/', views.sair, name='sair'),
     path('painel/candidato/', views.painel_candidato, name='painel_candidato'),
+    path('painel/candidato/candidaturas/<int:id>/', views.detalhe_candidatura, name='detalhe_candidatura'),
     path('painel/candidato/perfil/', views.editar_perfil_candidato, name='editar_perfil_candidato'),
     path('painel/empresa/', views.painel_empresa, name='painel_empresa'),
     path('painel/empresa/perfil/', views.editar_empresa, name='editar_empresa'),
@@ -21,6 +22,7 @@ urlpatterns = [
     path('painel/empresa/vagas/<int:id>/editar/', views.editar_vaga, name='editar_vaga'),
     path('painel/empresa/vagas/<int:id>/excluir/', views.excluir_vaga, name='excluir_vaga'),
     path('painel/empresa/vagas/<int:id>/candidatos/', views.candidatos_vaga, name='candidatos_vaga'),
+    path('painel/empresa/candidaturas/<int:id>/status/<str:status>/', views.atualizar_status_candidatura, name='atualizar_status_candidatura'),
     path('sobre/', views.sobre, name='sobre'),
     path('contato/', views.contato, name='contato'),
 ]

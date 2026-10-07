@@ -37,6 +37,8 @@ def empresa_required(view):
 
 
 def home(request):
+    if request.user.is_authenticated and hasattr(request.user, 'empresa'):
+        return redirect('painel_empresa')
     return render(request, 'index.html', {'vagas': Vaga.objects.filter(ativa=True).select_related('empresa')[:3]})
 
 
@@ -86,6 +88,8 @@ def cadastro_candidato(request):
 
 
 def cadastro_empresa(request):
+    if request.user.is_authenticated:
+        return redirecionar_painel(request)
     form = CadastroEmpresaForm(request.POST or None)
     if request.method == 'POST' and form.is_valid():
         login(request, form.save())
@@ -114,6 +118,16 @@ def redirecionar_painel(request):
 def painel_candidato(request):
     candidaturas = Candidatura.objects.filter(candidato=request.user.perfil_candidato).select_related('vaga', 'vaga__empresa')
     return render(request, 'painel_candidato.html', {'candidaturas': candidaturas})
+
+
+@candidato_required
+def detalhe_candidatura(request, id):
+    candidatura = get_object_or_404(
+        Candidatura.objects.select_related('vaga', 'vaga__empresa'),
+        id=id,
+        candidato=request.user.perfil_candidato,
+    )
+    return render(request, 'detalhe_candidatura.html', {'candidatura': candidatura})
 
 
 @candidato_required
@@ -198,10 +212,14 @@ def editar_vaga(request, id):
 @empresa_required
 def excluir_vaga(request, id):
     vaga = vaga_da_empresa(request, id)
+
     if request.method == 'POST':
-        vaga.delete()
-        messages.success(request, 'Vaga excluída.')
+        vaga.ativa = False
+        vaga.save(update_fields=['ativa'])
+
+        messages.success(request, 'Vaga desativada com sucesso.')
         return redirect('painel_empresa')
+
     return render(request, 'confirmar_exclusao.html', {'vaga': vaga})
 
 
@@ -210,6 +228,25 @@ def candidatos_vaga(request, id):
     vaga = vaga_da_empresa(request, id)
     candidaturas = vaga.candidaturas.select_related('candidato', 'candidato__usuario')
     return render(request, 'candidatos_vaga.html', {'vaga': vaga, 'candidaturas': candidaturas})
+
+
+@empresa_required
+def atualizar_status_candidatura(request, id, status):
+    if request.method != 'POST':
+        raise Http404
+
+    if status not in dict(Candidatura.STATUS_CHOICES):
+        raise Http404
+
+    candidatura = get_object_or_404(
+        Candidatura.objects.select_related('vaga'),
+        id=id,
+        vaga__empresa=request.user.empresa,
+    )
+    candidatura.status = status
+    candidatura.save(update_fields=['status'])
+    messages.success(request, f'O status de {candidatura.nome} foi atualizado para {candidatura.get_status_display()}.')
+    return redirect('candidatos_vaga', id=candidatura.vaga_id)
 
 
 def sobre(request):

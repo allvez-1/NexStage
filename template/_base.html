@@ -8,14 +8,14 @@
   <title>{% block titulo %}NexStage{% endblock %}</title>
   <link rel="icon" href="{% static 'assets/img/core-img/favicon.ico' %}">
   <link rel="stylesheet" href="{% static 'assets/style.css' %}">
-  <link rel="stylesheet" href="{% static 'assets/css/nexstage.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/css/nexstage.css' %}?v=3">
 </head>
 <body>
   <div class="barra-aviso"><div class="container">Conectando estudantes, empresas e oportunidades em Guanambi - BA.</div></div>
   <header class="cabecalho"><div class="container navegacao">
     <a class="marca" href="{% url 'home' %}">Nex<span>Stage</span><small>Vagas de estágio</small></a>
     <nav class="menu" aria-label="Navegação principal">
-      <a href="{% url 'home' %}">Início</a><a href="{% url 'lista_vagas' %}">Vagas</a><a href="{% url 'sobre' %}">Sobre</a><a href="{% url 'contato' %}">Contato</a>
+      {% if not user.is_authenticated or not user.empresa %}<a href="{% url 'home' %}">Início</a>{% endif %}<a href="{% url 'lista_vagas' %}">Vagas</a><a href="{% url 'sobre' %}">Sobre</a><a href="{% url 'contato' %}">Contato</a>
       {% if user.is_authenticated %}
         {% if user.empresa %}<a href="{% url 'painel_empresa' %}">Meu painel</a>{% elif user.perfil_candidato %}<a href="{% url 'painel_candidato' %}">Meu painel</a>{% endif %}
         <a class="botao botao-secundario" href="{% url 'sair' %}">Sair</a>
@@ -29,7 +29,7 @@
   <footer class="rodape"><div class="container rodape-grade">
     <div><a class="marca" href="{% url 'home' %}">Nex<span>Stage</span></a><p>Uma plataforma para centralizar oportunidades de estágio e aproximar jovens e empresas de Guanambi.</p></div>
     <div><h3>Para estudantes</h3><a href="{% url 'lista_vagas' %}">Encontrar vagas</a><a href="{% url 'sobre' %}">Como funciona</a></div>
-    <div><h3>Para empresas</h3><a href="{% url 'publicar_vaga' %}">Cadastrar uma vaga</a><a href="{% url 'contato' %}">Fale conosco</a></div>
+    <div><h3>Para empresas</h3>{% if user.is_authenticated and user.empresa %}<a href="{% url 'painel_empresa' %}">Painel da empresa</a><a href="{% url 'publicar_vaga' %}">Publicar uma vaga</a>{% else %}<a href="{% url 'login_empresa' %}">Área da empresa</a><a href="{% url 'contato' %}">Fale conosco</a>{% endif %}</div>
   </div><div class="container rodape-fim">Projeto de Conclusão de Curso - Técnico em Informática para Internet - IF Baiano Campus Guanambi.</div></footer>
 </body>
 </html>

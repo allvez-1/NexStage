@@ -1,0 +1,41 @@
+{% extends '_base.html' %}
+{% block titulo %}Detalhes da candidatura | NexStage{% endblock %}
+{% block conteudo %}
+<section class="pagina-topo">
+    <div class="container">
+        <p>{{ candidatura.vaga.empresa|default:candidatura.vaga.empresa_nome }}</p>
+        <h1>Detalhes da candidatura</h1>
+        <p>{{ candidatura.vaga.titulo }}</p>
+    </div>
+</section>
+<section class="conteudo">
+    <div class="container detalhe">
+        <article class="card">
+            <span class="rotulo">Sua candidatura</span>
+            <h2 class="titulo">{{ candidatura.vaga.titulo }}</h2>
+            <ul class="lista-detalhes">
+                <li><strong>Status:</strong> {{ candidatura.get_status_display }}</li>
+                <li><strong>Área:</strong> {{ candidatura.vaga.area }}</li>
+                <li><strong>Enviada em:</strong> {{ candidatura.criada_em|date:'d/m/Y H:i' }}</li>
+                <li><strong>Empresa:</strong> {{ candidatura.vaga.empresa|default:candidatura.vaga.empresa_nome }}</li>
+                <li><strong>Localização:</strong> {{ candidatura.vaga.localizacao }}</li>
+            </ul>
+            <h3>Mensagem de apresentação</h3>
+            <p>{{ candidatura.apresentacao|default:'Nenhuma mensagem de apresentação foi enviada.'|linebreaksbr }}</p>
+            {% if candidatura.curriculo %}
+                <p><a class="link" href="{{ candidatura.curriculo.url }}" target="_blank" rel="noopener">Abrir currículo enviado →</a></p>
+            {% endif %}
+        </article>
+        <aside class="painel-lateral">
+            <h3>Sobre a vaga</h3>
+            <p>{{ candidatura.vaga.descricao|truncatechars:300 }}</p>
+            {% if candidatura.vaga.ativa %}
+                <a class="link" href="{% url 'detalhe_vaga' candidatura.vaga.id %}">Ver vaga →</a>
+            {% else %}
+                <p class="ajuda">Esta vaga foi desativada pela empresa. Os dados da candidatura continuam disponíveis.</p>
+            {% endif %}
+            <p><a class="link" href="{% url 'painel_candidato' %}">← Voltar às minhas candidaturas</a></p>
+        </aside>
+    </div>
+</section>
+{% endblock %}

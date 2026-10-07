@@ -1,6 +1,35 @@
 {% extends '_base.html' %}
 {% block titulo %}Candidatos inscritos | NexStage{% endblock %}
 {% block conteudo %}
-<section class="pagina-topo"><div class="container"><p>{{ vaga.empresa }}</p><h1>Candidatos inscritos</h1><p>{{ vaga.titulo }}</p></div></section>
-<section class="conteudo"><div class="container"><div class="grade-vagas">{% for candidatura in candidaturas %}<article class="card"><h3>{{ candidatura.nome }}</h3><p><strong>Curso:</strong> {{ candidatura.curso }}</p><p><strong>E-mail:</strong> {{ candidatura.email }}</p><p><strong>Telefone:</strong> {{ candidatura.telefone|default:'Não informado' }}</p><p>{{ candidatura.apresentacao|default:'Sem mensagem de apresentação.' }}</p>{% if candidatura.curriculo %}<a class="link" href="{{ candidatura.curriculo.url }}" target="_blank">Abrir currículo →</a>{% endif %}</article>{% empty %}<div class="vazio">Ainda não há candidaturas para esta vaga.</div>{% endfor %}</div></div></section>
+<section class="pagina-topo">
+    <div class="container">
+        <p>{{ vaga.empresa }}</p>
+        <h1>Candidatos inscritos</h1>
+        <p>{{ vaga.titulo }}</p>
+    </div>
+</section>
+<section class="conteudo">
+    <div class="container">
+        <div class="grade-vagas">
+            {% for candidatura in candidaturas %}
+                <article class="card candidato-card">
+                    <span class="rotulo">Status: {{ candidatura.get_status_display }}</span>
+                    <h3>{{ candidatura.nome }}</h3>
+                    <p><strong>Curso:</strong> {{ candidatura.curso }}</p>
+                    <p><strong>E-mail:</strong> {{ candidatura.email }}</p>
+                    <p><strong>Telefone:</strong> {{ candidatura.telefone|default:'Não informado' }}</p>
+                    <p>{{ candidatura.apresentacao|default:'Sem mensagem de apresentação.' }}</p>
+                    {% if candidatura.curriculo %}<a class="link" href="{{ candidatura.curriculo.url }}" target="_blank" rel="noopener">Abrir currículo →</a>{% endif %}
+                    <div class="acoes acoes-status">
+                        <form method="post" action="{% url 'atualizar_status_candidatura' candidatura.id 'aprovada' %}">{% csrf_token %}<button class="botao" type="submit">Aceitar</button></form>
+                        <form method="post" action="{% url 'atualizar_status_candidatura' candidatura.id 'analise' %}">{% csrf_token %}<button class="botao botao-secundario" type="submit">Em análise</button></form>
+                        <form method="post" action="{% url 'atualizar_status_candidatura' candidatura.id 'rejeitada' %}">{% csrf_token %}<button class="botao botao-rejeitar" type="submit">Recusar</button></form>
+                    </div>
+                </article>
+            {% empty %}
+                <div class="vazio">Ainda não há candidaturas para esta vaga.</div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
 {% endblock %}

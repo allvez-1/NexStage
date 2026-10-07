@@ -1,6 +1,35 @@
 {% extends '_base.html' %}
 {% block titulo %}Meu painel | NexStage{% endblock %}
 {% block conteudo %}
-<section class="pagina-topo"><div class="container"><p>Olá, {{ user.first_name|default:user.username }}</p><h1>Painel do candidato</h1><p>Gerencie seu perfil e acompanhe suas candidaturas.</p></div></section>
-<section class="conteudo"><div class="container"><div class="acoes"><a class="botao" href="{% url 'lista_vagas' %}">Buscar vagas</a><a class="botao botao-secundario" href="{% url 'editar_perfil_candidato' %}">Editar meu perfil</a></div><h2 class="titulo">Minhas candidaturas</h2><div class="grade-vagas">{% for candidatura in candidaturas %}<article class="card vaga-card"><span class="empresa">{{ candidatura.vaga.empresa }}</span><h3>{{ candidatura.vaga.titulo }}</h3><div class="meta"><span>{{ candidatura.vaga.area }}</span><span>Enviada em {{ candidatura.criada_em|date:'d/m/Y' }}</span></div><a class="link" href="{% url 'detalhe_vaga' candidatura.vaga.id %}">Ver vaga →</a></article>{% empty %}<div class="vazio">Você ainda não enviou candidaturas. <a class="link" href="{% url 'lista_vagas' %}">Encontre uma vaga</a>.</div>{% endfor %}</div></div></section>
+<section class="pagina-topo">
+    <div class="container">
+        <p>Olá, {{ user.first_name|default:user.username }}</p><h1>Painel do candidato</h1><p>Gerencie seu perfil e acompanhe suas candidaturas.</p></div></section>
+<section class="conteudo">
+    <div class="container">
+        <div class="acoes">
+            <a class="botao" href="{% url 'lista_vagas' %}">Buscar vagas</a>
+            <a class="botao botao-secundario" href="{% url 'editar_perfil_candidato' %}">Editar meu perfil</a>
+        </div>
+        <h2 class="titulo">Minhas candidaturas</h2>
+        <div class="grade-vagas">{% for candidatura in candidaturas %}
+            <article class="card vaga-card">
+                <span class="empresa">{{ candidatura.vaga.empresa }}</span>
+                <h3>{{ candidatura.vaga.titulo }}</h3>
+                <div class="meta">
+                    <span>{{ candidatura.vaga.area }}</span>
+                    <span>Enviada em {{ candidatura.criada_em|date:'d/m/Y' }}</span>
+                </div>
+                <p class="status-candidatura">Atualização da empresa: <strong>{{ candidatura.get_status_display }}</strong></p>
+                
+                <span class="tag">{{ candidatura.get_status_display }}</span>
+                <a class="link" href="{% url 'detalhe_candidatura' candidatura.id %}">Ver candidatura →</a>
+                </article>{% empty %}
+                <div class="vazio">Você ainda não enviou candidaturas. 
+                    <a class="link" href="{% url 'lista_vagas' %}">Encontre uma vaga</a>.
+                    </div>{% endfor %}
+                </div>
+            </div>
+                
+        
+    </section>
 {% endblock %}

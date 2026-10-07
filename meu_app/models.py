@@ -63,20 +63,46 @@ class Vaga(models.Model):
 
 
 class Candidatura(models.Model):
-    vaga = models.ForeignKey(Vaga, on_delete=models.CASCADE, related_name='candidaturas')
-    candidato = models.ForeignKey(PerfilCandidato, on_delete=models.CASCADE, related_name='candidaturas', null=True, blank=True)
+    STATUS_CHOICES = [
+        ('analise', 'Em análise'),
+        ('aprovada', 'Aprovada'),
+        ('rejeitada', 'Rejeitada'),
+    ]
+
+    vaga = models.ForeignKey(
+        Vaga,
+        on_delete=models.CASCADE,
+        related_name='candidaturas'
+    )
+
+    candidato = models.ForeignKey(
+        PerfilCandidato,
+        on_delete=models.CASCADE,
+        related_name='candidaturas',
+        null=True,
+        blank=True
+    )
+
     nome = models.CharField('nome completo', max_length=140)
     email = models.EmailField('e-mail')
     telefone = models.CharField('telefone', max_length=25)
     curso = models.CharField('curso ou área de formação', max_length=140)
     curriculo = models.FileField('currículo', upload_to='curriculos/')
-    apresentacao = models.TextField('mensagem de apresentação', blank=True)
-    criada_em = models.DateTimeField('candidatura enviada em', auto_now_add=True)
+    apresentacao = models.TextField(
+        'mensagem de apresentação',
+        blank=True
+    )
 
-    class Meta:
-        ordering = ['-criada_em']
-        verbose_name = 'candidatura'
-        verbose_name_plural = 'candidaturas'
+    status = models.CharField(
+        'status',
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default='analise'
+    )
+
+    criada_em = models.DateTimeField(
+        'candidatura enviada em',
+        auto_now_add=True)
 
     def __str__(self):
         return f'{self.nome} - {self.vaga}'
