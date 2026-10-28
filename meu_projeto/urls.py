@@ -14,8 +14,6 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.conf import settings
-from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
 from django.contrib import admin
 from django.urls import path, include
@@ -29,5 +27,5 @@ urlpatterns = [
     path('', include('meu_app.urls')),
 ]
 
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# Currículos são arquivos privados e são entregues somente pela view protegida
+# visualizar_curriculo. Não servir MEDIA_ROOT como uma pasta pública.

@@ -19,7 +19,7 @@
                     <p><strong>E-mail:</strong> {{ candidatura.email }}</p>
                     <p><strong>Telefone:</strong> {{ candidatura.telefone|default:'Não informado' }}</p>
                     <p>{{ candidatura.apresentacao|default:'Sem mensagem de apresentação.' }}</p>
-                    {% if candidatura.curriculo %}<a class="link" href="{{ candidatura.curriculo.url }}" target="_blank" rel="noopener">Abrir currículo →</a>{% endif %}
+                    {% if candidatura.curriculo %}<a class="link" href="{% url 'visualizar_curriculo' candidatura.id %}" target="_blank" rel="noopener">Abrir currículo →</a>{% endif %}
                     <div class="acoes acoes-status">
                         <form method="post" action="{% url 'atualizar_status_candidatura' candidatura.id 'aprovada' %}">{% csrf_token %}<button class="botao" type="submit">Aceitar</button></form>
                         <form method="post" action="{% url 'atualizar_status_candidatura' candidatura.id 'analise' %}">{% csrf_token %}<button class="botao botao-secundario" type="submit">Em análise</button></form>

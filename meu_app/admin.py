@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Candidatura, Empresa, PerfilCandidato, Vaga
+from .models import Candidatura, Empresa, NotificacaoCandidatura, PerfilCandidato, Vaga
 
 
 @admin.register(Vaga)
@@ -13,9 +13,27 @@ class VagaAdmin(admin.ModelAdmin):
 @admin.register(Candidatura)
 class CandidaturaAdmin(admin.ModelAdmin):
     list_display = ('nome', 'vaga', 'curso', 'status', 'criada_em')
-    list_editable = ('status',)
     list_filter = ('status', 'criada_em')
     search_fields = ('nome', 'email', 'curso', 'vaga__titulo')
+
+    def save_model(self, request, obj, form, change):
+        status_anterior = None
+        if change:
+            status_anterior = Candidatura.objects.only('status').get(pk=obj.pk).status
+        super().save_model(request, obj, form, change)
+        if change and status_anterior != obj.status:
+            NotificacaoCandidatura.objects.create(
+                candidatura=obj,
+                status=obj.status,
+            )
+
+
+@admin.register(NotificacaoCandidatura)
+class NotificacaoCandidaturaAdmin(admin.ModelAdmin):
+    list_display = ('candidatura', 'status', 'criada_em', 'lida')
+    list_filter = ('status', 'lida', 'criada_em')
+    search_fields = ('candidatura__nome', 'candidatura__vaga__titulo')
+    readonly_fields = ('candidatura', 'status', 'criada_em')
 
 
 @admin.register(Empresa)

@@ -1,17 +1,19 @@
 from functools import wraps
+import mimetypes
+from pathlib import PurePosixPath
 
 from django.contrib import messages
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
-from django.http import Http404
+from django.http import FileResponse, Http404
 from django.shortcuts import get_object_or_404, redirect, render
 
 from .forms import (
     CadastroCandidatoForm, CadastroEmpresaForm, CandidaturaForm, EmpresaForm,
     LoginForm, PerfilCandidatoForm, VagaForm,
 )
-from .models import Candidatura, Vaga
+from .models import Candidatura, NotificacaoCandidatura, Vaga
 
 
 def candidato_required(view):
@@ -79,6 +81,8 @@ def login_empresa(request):
 
 
 def cadastro_candidato(request):
+    if request.user.is_authenticated:
+        return redirecionar_painel(request)
     form = CadastroCandidatoForm(request.POST or None)
     if request.method == 'POST' and form.is_valid():
         login(request, form.save())
@@ -105,7 +109,7 @@ def sair(request):
 
 
 def redirecionar_painel(request):
-    if request.user.is_staff:
+    if request.user.is_superuser:
         return redirect('admin:index')
     if hasattr(request.user, 'empresa'):
         return redirect('painel_empresa')
@@ -117,7 +121,13 @@ def redirecionar_painel(request):
 @candidato_required
 def painel_candidato(request):
     candidaturas = Candidatura.objects.filter(candidato=request.user.perfil_candidato).select_related('vaga', 'vaga__empresa')
-    return render(request, 'painel_candidato.html', {'candidaturas': candidaturas})
+    notificacoes = NotificacaoCandidatura.objects.filter(
+        candidatura__candidato=request.user.perfil_candidato,
+    ).select_related('candidatura__vaga')[:20]
+    return render(request, 'painel_candidato.html', {
+        'candidaturas': candidaturas,
+        'notificacoes': notificacoes,
+    })
 
 
 @candidato_required
@@ -128,6 +138,48 @@ def detalhe_candidatura(request, id):
         candidato=request.user.perfil_candidato,
     )
     return render(request, 'detalhe_candidatura.html', {'candidatura': candidatura})
+
+
+@login_required(login_url='login_candidato')
+def visualizar_curriculo(request, id):
+    candidatura = get_object_or_404(
+        Candidatura.objects.select_related('vaga', 'candidato'),
+        id=id,
+    )
+
+    candidato_autorizado = (
+        hasattr(request.user, 'perfil_candidato')
+        and candidatura.candidato_id == request.user.perfil_candidato.id
+    )
+    empresa_autorizada = (
+        hasattr(request.user, 'empresa')
+        and candidatura.vaga.empresa_id == request.user.empresa.id
+    )
+    if not (candidato_autorizado or empresa_autorizada) or not candidatura.curriculo:
+        raise Http404
+
+    nome_arquivo = PurePosixPath(candidatura.curriculo.name).name
+    tipo_arquivo = mimetypes.guess_type(nome_arquivo)[0] or 'application/octet-stream'
+    return FileResponse(
+        candidatura.curriculo.open('rb'),
+        as_attachment=False,
+        filename=nome_arquivo,
+        content_type=tipo_arquivo,
+    )
+
+
+@candidato_required
+def marcar_notificacao_lida(request, id):
+    if request.method != 'POST':
+        raise Http404
+    notificacao = get_object_or_404(
+        NotificacaoCandidatura,
+        id=id,
+        candidatura__candidato=request.user.perfil_candidato,
+    )
+    notificacao.lida = True
+    notificacao.save(update_fields=['lida'])
+    return redirect('painel_candidato')
 
 
 @candidato_required
@@ -243,9 +295,11 @@ def atualizar_status_candidatura(request, id, status):
         id=id,
         vaga__empresa=request.user.empresa,
     )
-    candidatura.status = status
-    candidatura.save(update_fields=['status'])
-    messages.success(request, f'O status de {candidatura.nome} foi atualizado para {candidatura.get_status_display()}.')
+    houve_alteracao = candidatura.atualizar_status(status)
+    if houve_alteracao:
+        messages.success(request, f'O status de {candidatura.nome} foi atualizado para {candidatura.get_status_display()}.')
+    else:
+        messages.info(request, f'A candidatura de {candidatura.nome} já estava com esse status.')
     return redirect('candidatos_vaga', id=candidatura.vaga_id)
 
 

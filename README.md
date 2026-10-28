@@ -1,5 +1,7 @@
 # NexStage
 
+> **Documentação funcional e diagramas atualizados:** consulte [DOCUMENTACAO_FUNCIONAL_REVISADA.md](DOCUMENTACAO_FUNCIONAL_REVISADA.md). Ela define os atores, casos de uso e diagramas vigentes para esta versão do sistema.
+
 <p align="center">
   <strong>Vagas de estágio em Guanambi - BA</strong><br>
   Uma plataforma para aproximar estudantes, empresas e oportunidades.
@@ -68,7 +70,7 @@ flowchart LR
 1. Cria uma conta de empresa e acessa seu painel.
 2. Publica, edita e acompanha suas vagas.
 3. Consulta os currículos e os dados de quem se candidatou.
-4. Aceita, mantém em análise ou recusa cada candidatura. O status atualizado fica visível para o candidato no painel.
+4. Aceita, mantém em análise ou recusa cada candidatura. A mudança cria uma notificação interna persistente no painel do candidato.
 5. Desativa vagas encerradas. A desativação remove a vaga das buscas e preserva o histórico e as candidaturas.
 
 ## Recursos
@@ -77,7 +79,7 @@ flowchart LR
 | --- | --- |
 | Vagas | Listagem, pesquisa, detalhes e filtro automático de vagas desativadas |
 | Candidaturas | Envio de currículo e mensagem, detalhes e status |
-| Painel do candidato | Perfil, lista de candidaturas e atualizações de status |
+| Painel do candidato | Perfil, candidaturas, status e notificações internas |
 | Painel da empresa | Publicação e edição de vagas, inscritos e gestão de status |
 | Acesso | Login e cadastro separados para candidatos e empresas |
 | Histórico | Desativação lógica de vagas para preservar candidaturas existentes |
@@ -89,7 +91,7 @@ flowchart LR
 - **Aprovada**: empresa aceitou a candidatura.
 - **Rejeitada**: empresa recusou a candidatura.
 
-O candidato vê o status atualizado no painel e na página de detalhes da candidatura.
+O candidato vê o status atualizado no painel e na página de detalhes. Mudanças de status também geram notificações internas persistentes; não há envio de e-mail ou push nesta versão.
 
 </details>
 
@@ -157,6 +159,8 @@ NexStage/
 ├── manage.py
 └── requirements.txt
 ~~~
+
+Para atualizar o banco com as notificações internas, execute `python manage.py migrate` dentro da pasta do projeto. Currículos são privados: não exponha a pasta `MEDIA_ROOT` diretamente por um servidor web.
 
 ## Próximos passos
 

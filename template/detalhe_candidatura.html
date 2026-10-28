@@ -23,7 +23,7 @@
             <h3>Mensagem de apresentação</h3>
             <p>{{ candidatura.apresentacao|default:'Nenhuma mensagem de apresentação foi enviada.'|linebreaksbr }}</p>
             {% if candidatura.curriculo %}
-                <p><a class="link" href="{{ candidatura.curriculo.url }}" target="_blank" rel="noopener">Abrir currículo enviado →</a></p>
+                <p><a class="link" href="{% url 'visualizar_curriculo' candidatura.id %}" target="_blank" rel="noopener">Abrir currículo enviado →</a></p>
             {% endif %}
         </article>
         <aside class="painel-lateral">

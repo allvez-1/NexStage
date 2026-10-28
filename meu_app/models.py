@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.db import models
+from django.db import models, transaction
 
 
 class PerfilCandidato(models.Model):
@@ -106,3 +106,41 @@ class Candidatura(models.Model):
 
     def __str__(self):
         return f'{self.nome} - {self.vaga}'
+
+    def atualizar_status(self, novo_status):
+        if novo_status not in dict(self.STATUS_CHOICES):
+            raise ValueError('Status de candidatura inválido.')
+        if self.status == novo_status:
+            return False
+
+        with transaction.atomic():
+            self.status = novo_status
+            self.save(update_fields=['status'])
+            NotificacaoCandidatura.objects.create(
+                candidatura=self,
+                status=novo_status,
+            )
+        return True
+
+
+class NotificacaoCandidatura(models.Model):
+    candidatura = models.ForeignKey(
+        Candidatura,
+        on_delete=models.CASCADE,
+        related_name='notificacoes',
+    )
+    status = models.CharField(
+        'status comunicado',
+        max_length=20,
+        choices=Candidatura.STATUS_CHOICES,
+    )
+    criada_em = models.DateTimeField('criada em', auto_now_add=True)
+    lida = models.BooleanField('lida', default=False)
+
+    class Meta:
+        ordering = ['-criada_em']
+        verbose_name = 'notificação de candidatura'
+        verbose_name_plural = 'notificações de candidaturas'
+
+    def __str__(self):
+        return f'{self.candidatura.nome} - {self.get_status_display()}'

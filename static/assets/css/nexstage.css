@@ -33,5 +33,6 @@ a { color: inherit; text-decoration: none; }
 .rodape { background:#08233d; color:#ccdae6; padding:46px 0 24px; }.rodape-grade { display:grid; grid-template-columns:1.5fr 1fr 1fr; gap:30px; }.rodape h3 { color:#fff; font:800 1.05rem Raleway,sans-serif; }.rodape a { display:block; margin:7px 0; }.rodape-fim { border-top:1px solid #244661; margin-top:32px; padding-top:18px; font-size:.9rem; color:#8fa8bd; }
 
 .acoes-status { margin-top:12px; }.acoes-status form { margin:0; }.botao-rejeitar { background:#fce8e8; color:#8b2525; }.botao-rejeitar:hover { background:#f6d2d2; color:#681919; }.status-candidatura { padding:10px 12px; border-left:3px solid var(--verde); background:#effaf7; color:var(--azul); border-radius:4px; }
+.notificacoes { margin-bottom:36px; }.notificacao-nao-lida { border-color:var(--verde); box-shadow:0 0 0 2px rgba(53,185,154,.12); }
 
 @media (max-width: 780px) { .menu { gap:12px; font-size:.92rem; }.navegacao { gap:12px; }.menu a:not(.botao) { display:none; }.grade,.numeros .grade,.grade-vagas,.rodape-grade,.detalhe { grid-template-columns:1fr; }.busca,.formulario-pesquisa { flex-direction:column; }.hero { min-height:470px; }.secao { padding:56px 0; } }

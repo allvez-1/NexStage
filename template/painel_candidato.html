@@ -10,6 +10,24 @@
             <a class="botao" href="{% url 'lista_vagas' %}">Buscar vagas</a>
             <a class="botao botao-secundario" href="{% url 'editar_perfil_candidato' %}">Editar meu perfil</a>
         </div>
+        <h2 class="titulo">Notificações</h2>
+        <div class="grade-vagas notificacoes">
+            {% for notificacao in notificacoes %}
+                <article class="card{% if not notificacao.lida %} notificacao-nao-lida{% endif %}">
+                    <p>O status da sua candidatura foi atualizado para <strong>{{ notificacao.get_status_display }}</strong>.</p>
+                    <p><strong>Vaga:</strong> {{ notificacao.candidatura.vaga.titulo }}</p>
+                    <p class="ajuda">{{ notificacao.criada_em|date:'d/m/Y H:i' }}</p>
+                    {% if not notificacao.lida %}
+                        <form method="post" action="{% url 'marcar_notificacao_lida' notificacao.id %}">
+                            {% csrf_token %}
+                            <button class="botao botao-secundario" type="submit">Marcar como lida</button>
+                        </form>
+                    {% endif %}
+                </article>
+            {% empty %}
+                <div class="vazio">Você ainda não tem notificações registradas.</div>
+            {% endfor %}
+        </div>
         <h2 class="titulo">Minhas candidaturas</h2>
         <div class="grade-vagas">{% for candidatura in candidaturas %}
             <article class="card vaga-card">
@@ -19,12 +37,10 @@
                     <span>{{ candidatura.vaga.area }}</span>
                     <span>Enviada em {{ candidatura.criada_em|date:'d/m/Y' }}</span>
                 </div>
-                <p class="status-candidatura">Atualização da empresa: <strong>{{ candidatura.get_status_display }}</strong></p>
-                
-                <span class="tag">{{ candidatura.get_status_display }}</span>
+                <p class="status-candidatura">Status atual: <strong>{{ candidatura.get_status_display }}</strong></p>
                 <a class="link" href="{% url 'detalhe_candidatura' candidatura.id %}">Ver candidatura →</a>
                 </article>{% empty %}
-                <div class="vazio">Você ainda não enviou candidaturas. 
+                <div class="vazio">Você ainda não enviou candidaturas.
                     <a class="link" href="{% url 'lista_vagas' %}">Encontre uma vaga</a>.
                     </div>{% endfor %}
                 </div>
