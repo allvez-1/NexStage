@@ -1,6 +1,6 @@
 # NexStage
 
-> **Documentação funcional e diagramas atualizados:** consulte [DOCUMENTACAO_FUNCIONAL_REVISADA.md](DOCUMENTACAO_FUNCIONAL_REVISADA.md). Ela define os atores, casos de uso e diagramas vigentes para esta versão do sistema.
+> **Documentação funcional e diagramas atualizados:** consulte [Descricao_dos_Casos_de_Uso_Nextage.pdf](Descricao_dos_Casos_de_Uso_Nextage.pdf). Ela define os atores, casos de uso e diagramas vigentes para esta versão do sistema.
 
 <p align="center">
   <strong>Vagas de estágio em Guanambi - BA</strong><br>
